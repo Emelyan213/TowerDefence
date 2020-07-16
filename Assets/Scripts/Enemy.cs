@@ -1,48 +1,29 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamage
+namespace Source.Enemy
 {
-    public event Action<Enemy> onDeath;
-    public Vector3 Position => _transform.position;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-
-    private int _health;
-    private int _goldCoinCount;
-    private int _damagePower;
-
-    private Transform _transform;
-
-    private void Awake()
+    public abstract class Enemy : MonoBehaviour
     {
-        _transform = transform;
-    }
+        public Vector3 Position => _transform.position;
 
-    public void SetParameters(EnemyInfo parameters)
-    {
-        spriteRenderer.sprite = parameters.sprite;
-        _health = parameters.health;
-        _goldCoinCount = parameters.goldCoinCount;
-        _damagePower = parameters.damagePower;
-    }
+        protected Transform _transform;
 
-    public void GetDamage(int damagePower)
-    {
-        _health -= damagePower;
+        protected int _health;
+        protected int _goldCoinCount;
+        protected int _damagePower;
 
-        if (_health < 0)
+        private void Awake()
         {
-            onDeath?.Invoke(this);
-            Destroy(gameObject);
+            _transform = transform;
+        }
+        protected void SetParameters(EnemyInfo parameters)
+        {
+            _health = parameters.health;
+            _goldCoinCount = parameters.goldCoinCount;
+            _damagePower = parameters.damagePower;
         }
 
-        print(_health);
-    }
-
-    public void SetDamage()
-    {
-        throw new NotImplementedException();
     }
 }
+

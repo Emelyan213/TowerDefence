@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace Source.Navigation
+namespace Assets.Scripts.Navigation
 {
     public class WayPoint : MonoBehaviour
     {

@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Source.Navigation
+namespace Assets.Scripts.Navigation
 {
     public class Mover : MonoBehaviour
     {
+        public event Action onCameToEndPoint;
         [SerializeField] private float speed;
         [SerializeField] private float accuracy;
 
@@ -39,6 +41,8 @@ namespace Source.Navigation
 
                     yield return new WaitForEndOfFrame();
                 }
+
+                onCameToEndPoint?.Invoke();
             }
         }
     }
