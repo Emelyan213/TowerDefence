@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 public class StoneTower : Tower, IDamage
 {
-    private SceneController _sceneController;
+    [SerializeField] private TowerInfo towerInfo;
+
+    private EnemiesManager _enemiesManager;
 
     private Vector3 _position;
     private void Start()
     {
-        _sceneController = FindObjectOfType<SceneController>();
+        _enemiesManager = FindObjectOfType<EnemiesManager>();
         _position = transform.position;
 
         StartCoroutine(Shoot());
+
+        SetParameters(towerInfo);
     }
 
     public new void SetParameters(TowerInfo parameters)
@@ -26,15 +31,15 @@ public class StoneTower : Tower, IDamage
     {
         while (true)
         {
-            var enemy = _sceneController.GetNearestEnemy(_position, _fireRange);
+            var enemy = _enemiesManager.GetNearestEnemy(_position, _fireRange);
 
             if (enemy == null)
             {
-                yield return new WaitForSeconds(_fireRate * 0.1f);
+                yield return new WaitForEndOfFrame();
                 continue;
             }
 
-            enemy.GetComponent<IDamage>().GetDamage(_shootPower);
+            enemy.GetDamage(_shootPower);
             yield return new WaitForSeconds(_fireRate);
         }
     }
@@ -45,8 +50,4 @@ public class StoneTower : Tower, IDamage
 
     }
 
-    public void SetDamage()
-    {
-        throw new NotImplementedException();
-    }
 }

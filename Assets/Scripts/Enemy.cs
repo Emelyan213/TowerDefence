@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Source.Enemy
 {
     public abstract class Enemy : MonoBehaviour
     {
-        public Vector3 Position => _transform.position;
-
         protected Transform _transform;
 
         protected int _health;
@@ -17,7 +14,7 @@ namespace Source.Enemy
         {
             _transform = transform;
         }
-        protected void SetParameters(EnemyInfo parameters)
+        protected void SetParameters(EnemyParameters parameters)
         {
             _health = parameters.health;
             _goldCoinCount = parameters.goldCoinCount;

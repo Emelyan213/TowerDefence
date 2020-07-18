@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
@@ -12,5 +10,6 @@ public abstract class Tower : MonoBehaviour
     {
         _fireRate = parameters.fireRate;
         _shootPower = parameters.shootPower;
+        _fireRange = parameters.fireRange;
     }
 }

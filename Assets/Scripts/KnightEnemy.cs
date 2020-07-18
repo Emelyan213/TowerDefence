@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Interfaces;
 using Assets.Scripts.Navigation;
 using UnityEngine;
 
 namespace Source.Enemy
 {
-    public class KnightEnemy : Enemy, IDamage
+    public class KnightEnemy : Enemy, IEnemy
     {
-        public event Action<int> onSetMainTowerDamage;
-        public event Action<Enemy, int> onDeath;
+        public event Action<int> OnSetMainTowerDamage;
+        public event Action<IEnemy, int> OnDeath;
+        public Vector3 Position => _transform ? _transform.position : transform.position;
 
         private void Awake()
         {
             GetComponent<Mover>().onCameToEndPoint += Death;
         }
 
-        public new void SetParameters(EnemyInfo parameters)
+        public new void SetParameters(EnemyParameters parameters)
         {
             base.SetParameters(parameters);
 
@@ -29,21 +31,16 @@ namespace Source.Enemy
 
             if (_health < 0)
             {
-                onDeath?.Invoke(this, _goldCoinCount);
+                OnDeath?.Invoke(this, _goldCoinCount);
                 Destroy(gameObject);
             }
         }
 
         public void Death()
         {
-            onSetMainTowerDamage?.Invoke(_damagePower);
-            onDeath?.Invoke(this, 0);
+            OnSetMainTowerDamage?.Invoke(_damagePower);
+            OnDeath?.Invoke(this, 0);
             Destroy(gameObject);
-        }
-
-        public void SetDamage()
-        {
-            throw new NotImplementedException();
         }
     }
 }
