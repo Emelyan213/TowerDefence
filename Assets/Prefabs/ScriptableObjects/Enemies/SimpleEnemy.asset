@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SimpleEnemy
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 18d279afa8c113f43b263738f6e8c895, type: 3}
-  health: 80
-  damagePower: 25
-  goldCoinCount: 38
+  health: 100
+  damagePower: 20
+  goldCoinCount: 10

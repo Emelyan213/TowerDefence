@@ -6,7 +6,7 @@ namespace Source.Enemy
     {
         protected Transform _transform;
 
-        protected int _health;
+        protected float _health;
         protected int _goldCoinCount;
         protected int _damagePower;
 
@@ -14,11 +14,11 @@ namespace Source.Enemy
         {
             _transform = transform;
         }
-        protected void SetParameters(EnemyParameters parameters)
+        protected void SetParameters(EnemyState state)
         {
-            _health = parameters.health;
-            _goldCoinCount = parameters.goldCoinCount;
-            _damagePower = parameters.damagePower;
+            _health = state.health;
+            _goldCoinCount = state.goldCoinCount;
+            _damagePower = state.damagePower;
         }
 
     }

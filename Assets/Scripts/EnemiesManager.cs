@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Navigation;
-using Source.Enemy;
 using UnityEngine;
 using Random = System.Random;
 
@@ -18,44 +17,78 @@ namespace Assets.Scripts
 
         public WayPoint[] wps;
 
+        public int KilledEnemiesCount => _killedEnemiesCount;
+
+        private int _killedEnemiesCount;
+
         private List<IEnemy> _enemies = new List<IEnemy>();
 
         private GameController _gameController;
-        private EnemiesParametersController _enemiesParametersController;
+        private EnemiesStatesController _enemiesParametersController;
         private const int MaxRangeRandomEnemyCount = 3;
-        private int timeBetweenWaves = 5;
+        private int _timeBetweenWaves;
 
         private int _waveIndex = 1;
+        private bool _isGameContinues = true;
 
-        private void Awake()
+        private void Start()
         {
-            _enemiesParametersController = new EnemiesParametersController();
 
+            _timeBetweenWaves = JsonWorker.Deserialize<ConfigFile>("config.txt").timeBetweenWaves;
+
+
+            print(_timeBetweenWaves);
+            _enemiesParametersController = new EnemiesStatesController();
             _enemiesParametersController.SetParameters(enemyTypes);
-        }
 
-        void Start()
-        {
             _gameController = FindObjectOfType<GameController>();
 
+            SpawnEnemies();
+        }
+
+        public void Stop()
+        {
+            _isGameContinues = false;
+        }
+
+        public void Restart()
+        {
+            _waveIndex = 1;
+            _killedEnemiesCount = 0;
+            OnChangedWave?.Invoke(_waveIndex);
+
+            DestroyAllEnemy();
+            _enemiesParametersController.SetParameters(enemyTypes);
+            _isGameContinues = true;
+
+            SpawnEnemies();
+        }
+
+        private void DestroyAllEnemy()
+        {
+            foreach (var enemy in _enemies.ToArray())
+                enemy.Destroy();
+
+            _enemies.Clear();
+        }
+
+        private void SpawnEnemies()
+        {
             var random = new Random();
-
-            for (var i = 0; i < 10; i++)
-                print(random.Next(0, 2));
-
-            var count = 10;
 
             StartCoroutine(Spawn());
 
             IEnumerator Spawn()
             {
-                while (true)
+                while (_isGameContinues)
                 {
-                    count = random.Next(_waveIndex, _waveIndex + MaxRangeRandomEnemyCount);
+                    var count = random.Next(_waveIndex, _waveIndex + MaxRangeRandomEnemyCount);
 
                     yield return InstantiationEnemy(count);
 
-                    yield return new WaitForSeconds(timeBetweenWaves);
+                    yield return new WaitUntil(() => _enemies.Count == 0);
+
+                    yield return new WaitForSeconds(_timeBetweenWaves);
                 }
             }
         }
@@ -94,6 +127,8 @@ namespace Assets.Scripts
             {
                 _enemies.Remove(ee);
                 _gameController.Player.IncreaseGold(coin);
+
+                _killedEnemiesCount++;
 
                 if (_enemies.Count == 0)
                     EndWave();

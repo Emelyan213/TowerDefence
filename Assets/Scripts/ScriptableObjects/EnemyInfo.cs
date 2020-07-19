@@ -4,13 +4,13 @@
 public class EnemyInfo : ScriptableObject
 {
     public Sprite sprite;
-    public int health;
+    public float health;
     public int damagePower;
     public int goldCoinCount;
 
-    public EnemyParameters GetParameters()
+    public EnemyState GetState()
     {
-        var state = new EnemyParameters
+        var state = new EnemyState
         {
             sprite = sprite,
             health = health,

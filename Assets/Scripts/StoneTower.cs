@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class StoneTower : Tower, IDamage
+public class StoneTower : Tower
 {
     [SerializeField] private TowerInfo towerInfo;
 
@@ -14,6 +16,7 @@ public class StoneTower : Tower, IDamage
     private void Start()
     {
         _enemiesManager = FindObjectOfType<EnemiesManager>();
+
         _position = transform.position;
 
         StartCoroutine(Shoot());
@@ -44,10 +47,15 @@ public class StoneTower : Tower, IDamage
         }
     }
 
-
-    public void GetDamage(int damagePower)
+    private void OnMouseDown()
     {
+        if (MenuManager.towerImproveMenu.IsActiveForTower(this))
+            return;
 
+        var position = Input.mousePosition;
+
+        MenuManager.towerImproveMenu.Show(this, position);
     }
+
 
 }

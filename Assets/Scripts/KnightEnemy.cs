@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Navigation;
 using UnityEngine;
@@ -18,14 +16,14 @@ namespace Source.Enemy
             GetComponent<Mover>().onCameToEndPoint += Death;
         }
 
-        public new void SetParameters(EnemyParameters parameters)
+        public new void SetParameters(EnemyState state)
         {
-            base.SetParameters(parameters);
+            base.SetParameters(state);
 
-            GetComponentInChildren<SpriteRenderer>().sprite = parameters.sprite;
+            GetComponentInChildren<SpriteRenderer>().sprite = state.sprite;
         }
 
-        public void GetDamage(int damagePower)
+        public void GetDamage(float damagePower)
         {
             _health -= damagePower;
 
@@ -40,6 +38,11 @@ namespace Source.Enemy
         {
             OnSetMainTowerDamage?.Invoke(_damagePower);
             OnDeath?.Invoke(this, 0);
+            Destroy(gameObject);
+        }
+
+        public void Destroy()
+        {
             Destroy(gameObject);
         }
     }

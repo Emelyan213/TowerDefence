@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using Source.Enemy;
 
 namespace Assets.Scripts.Interfaces
 {
@@ -10,8 +9,10 @@ namespace Assets.Scripts.Interfaces
         event Action<IEnemy, int> OnDeath;
         Vector3 Position { get; }
 
-        void SetParameters(EnemyParameters parameters);
+        void SetParameters(EnemyState state);
 
         void Death();
+
+        void Destroy();
     }
 }

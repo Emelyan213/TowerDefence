@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public struct EnemyParameters
+public struct EnemyState
 {
     public Sprite sprite;
-    public int health;
+    public float health;
     public int damagePower;
     public int goldCoinCount;
 
-    public EnemyParameters ImproveSomeEnemyParameters(int increaseValue)
+    public EnemyState ImproveSomeEnemyParameters(int increaseValue)
     {
         damagePower += IncreaseParameter(increaseValue);
         health += IncreaseParameter(increaseValue);

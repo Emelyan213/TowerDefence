@@ -1,10 +1,10 @@
 ﻿using System;
-using UnityEngine;
 
 public class Player
 {
     public event Action<int> OnGoldChanged;
     public event Action<int> OnHealthChanged;
+    public event Action OnPlayerDeath;
 
     private int _startHealth;
     private int _goldCoinsCount;
@@ -32,6 +32,10 @@ public class Player
     public void DecreaseHealth(int damage)
     {
         _health -= damage;
+
+        if (_health <= 0)
+            OnPlayerDeath?.Invoke();
+
         OnHealthChanged?.Invoke(_health);
     }
 
