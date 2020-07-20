@@ -15,4 +15,4 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: e37fc7f2041e42f4db7195177854c66b, type: 3}
   health: 150
   damagePower: 20
-  goldCoinCount: 15
+  goldCoinCount: 25

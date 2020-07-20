@@ -3,41 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Navigation;
+using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Enemy
 {
     public class EnemiesManager : MonoBehaviour
     {
-        public GameObject enemyPrefab;
-        public EnemyInfo[] enemyTypes;
-        public float delay = 1;
         public event Action<int> OnChangedWave;
-
-        public WayPoint[] wps;
-
         public int KilledEnemiesCount => _killedEnemiesCount;
+        public int TimeBetweenWaves { get; set; }
 
-        private int _killedEnemiesCount;
+        [SerializeField] private GameObject enemyPrefab;
+        [SerializeField] private EnemyInfo[] enemyTypes;
+        [SerializeField] private float delay = 1;
 
-        private List<IEnemy> _enemies = new List<IEnemy>();
+        [SerializeField] private WayPoint[] wayPoints;
 
         private GameController _gameController;
         private EnemiesStatesController _enemiesParametersController;
+
+        private List<IEnemy> _enemies = new List<IEnemy>();
+        private int _killedEnemiesCount;
         private const int MaxRangeRandomEnemyCount = 3;
-        private int _timeBetweenWaves;
 
         private int _waveIndex = 1;
         private bool _isGameContinues = true;
 
         private void Start()
         {
-
-            _timeBetweenWaves = JsonWorker.Deserialize<ConfigFile>("config.txt").timeBetweenWaves;
-
-
-            print(_timeBetweenWaves);
             _enemiesParametersController = new EnemiesStatesController();
             _enemiesParametersController.SetParameters(enemyTypes);
 
@@ -88,7 +83,7 @@ namespace Assets.Scripts
 
                     yield return new WaitUntil(() => _enemies.Count == 0);
 
-                    yield return new WaitForSeconds(_timeBetweenWaves);
+                    yield return new WaitForSeconds(TimeBetweenWaves);
                 }
             }
         }
@@ -109,7 +104,7 @@ namespace Assets.Scripts
 
                 var mover = enemyObject.GetComponent<Mover>();
 
-                mover.SetWayPoints(wps);
+                mover.SetWayPoints(wayPoints);
                 mover.StartMoveOnPoints();
 
                 EnemySetting(enemyObject);
@@ -159,6 +154,5 @@ namespace Assets.Scripts
 
             return nearestEnemy;
         }
-
     }
 }

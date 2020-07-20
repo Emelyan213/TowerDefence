@@ -1,4 +1,6 @@
 ﻿using System;
+using Assets.Scripts.Enemy;
+using Assets.Scripts.Towers;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -7,8 +9,9 @@ namespace Assets.Scripts
     {
         public event Action<int> OnEndGame;
 
-        public Player Player => _player;
         public EnemiesManager Enemies => enemies;
+        public Player Player => _player;
+
         private Player _player;
 
         [SerializeField] private int startPlayerHealth;
@@ -17,6 +20,8 @@ namespace Assets.Scripts
 
         private void Awake()
         {
+            enemies.TimeBetweenWaves = JsonWorker.Deserialize<ConfigFile>("config.txt").timeBetweenWaves;
+
             _player = new Player();
             _player.SetStartHealth(startPlayerHealth);
 

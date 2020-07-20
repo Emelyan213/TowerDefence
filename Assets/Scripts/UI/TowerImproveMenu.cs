@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Assets.Scripts.Towers;
 
 namespace Assets.Scripts.UI
 {

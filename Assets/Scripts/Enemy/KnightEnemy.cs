@@ -3,7 +3,7 @@ using Assets.Scripts.Interfaces;
 using Assets.Scripts.Navigation;
 using UnityEngine;
 
-namespace Source.Enemy
+namespace Assets.Scripts.Enemy
 {
     public class KnightEnemy : Enemy, IEnemy
     {

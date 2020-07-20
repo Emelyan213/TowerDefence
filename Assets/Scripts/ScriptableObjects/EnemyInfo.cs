@@ -1,23 +1,27 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable objects/Enemy")]
-public class EnemyInfo : ScriptableObject
+namespace Assets.Scripts.ScriptableObjects
 {
-    public Sprite sprite;
-    public float health;
-    public int damagePower;
-    public int goldCoinCount;
-
-    public EnemyState GetState()
+    [CreateAssetMenu(menuName = "Scriptable objects/Enemy")]
+    public class EnemyInfo : ScriptableObject
     {
-        var state = new EnemyState
-        {
-            sprite = sprite,
-            health = health,
-            damagePower = damagePower,
-            goldCoinCount = goldCoinCount
-        };
+        public Sprite sprite;
+        public float health;
+        public int damagePower;
+        public int goldCoinCount;
 
-        return state;
+        public EnemyState GetState()
+        {
+            var state = new EnemyState
+            {
+                sprite = sprite,
+                health = health,
+                damagePower = damagePower,
+                goldCoinCount = goldCoinCount
+            };
+
+            return state;
+        }
     }
 }
+

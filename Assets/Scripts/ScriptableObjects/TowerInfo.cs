@@ -1,24 +1,27 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Towers;
+using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable objects/Tower")]
-public class TowerInfo : ScriptableObject
+namespace Assets.Scripts.ScriptableObjects
 {
-    public Sprite sprite;
-    public float shootPower;
-    public float fireRate;
-    public float fireRange;
-
-    public TowerState GetState()
+    [CreateAssetMenu(menuName = "Scriptable objects/Tower")]
+    public class TowerInfo : ScriptableObject
     {
-        var state = new TowerState
+        public Sprite sprite;
+        public float shootPower;
+        public float fireRate;
+        public float fireRange;
+
+        public TowerState GetState()
         {
-            sprite = sprite,
-            shootPower = shootPower,
-            fireRate = fireRate,
-            fireRange = fireRange
-        };
+            var state = new TowerState
+            {
+                sprite = sprite,
+                shootPower = shootPower,
+                fireRate = fireRate,
+                fireRange = fireRange
+            };
 
-        return state;
+            return state;
+        }
     }
-
 }

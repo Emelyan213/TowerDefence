@@ -1,4 +1,7 @@
-﻿public interface IDamage
+﻿namespace Assets.Scripts.Interfaces
 {
-    void GetDamage(float damagePower);
+    public interface IDamage
+    {
+        void GetDamage(float damagePower);
+    }
 }
