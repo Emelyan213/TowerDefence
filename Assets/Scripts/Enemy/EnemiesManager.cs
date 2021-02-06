@@ -12,7 +12,8 @@ namespace Assets.Scripts.Enemy
     public class EnemiesManager : MonoBehaviour
     {
         public event Action<int> OnChangedWave;
-        public int KilledEnemiesCount => _killedEnemiesCount;
+        public int KilledEnemiesCount { get; private set; }
+
         public int TimeBetweenWaves { get; set; }
 
         [SerializeField] private GameObject enemyPrefab;
@@ -25,7 +26,6 @@ namespace Assets.Scripts.Enemy
         private EnemiesStatesController _enemiesParametersController;
 
         private List<IEnemy> _enemies = new List<IEnemy>();
-        private int _killedEnemiesCount;
         private const int MaxRangeRandomEnemyCount = 3;
 
         private int _waveIndex = 1;
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Enemy
         public void Restart()
         {
             _waveIndex = 1;
-            _killedEnemiesCount = 0;
+            KilledEnemiesCount = 0;
             OnChangedWave?.Invoke(_waveIndex);
 
             DestroyAllEnemy();
@@ -105,7 +105,7 @@ namespace Assets.Scripts.Enemy
                 var mover = enemyObject.GetComponent<Mover>();
 
                 mover.SetWayPoints(wayPoints);
-                mover.StartMoveOnPoints();
+                //mover.StartMoveOnPoints();
 
                 EnemySetting(enemyObject);
 
@@ -118,12 +118,12 @@ namespace Assets.Scripts.Enemy
             var enemy = enemyObject.GetComponent<IEnemy>();
             enemy.SetParameters(_enemiesParametersController.GetRandomParameters());
 
-            enemy.OnDeath += (ee, coin) =>
+            enemy.OnDeath += (deadEnemy, coin) =>
             {
-                _enemies.Remove(ee);
+                _enemies.Remove(deadEnemy);
                 _gameController.Player.IncreaseGold(coin);
 
-                _killedEnemiesCount++;
+                KilledEnemiesCount++;
 
                 if (_enemies.Count == 0)
                     EndWave();

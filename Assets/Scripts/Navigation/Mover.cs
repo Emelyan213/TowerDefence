@@ -24,26 +24,38 @@ namespace Assets.Scripts.Navigation
             _wayPoints = wayPoints;
         }
 
-        public void StartMoveOnPoints()
+        private void LateUpdate()
         {
-            StartCoroutine(GoOnPoints());
+            _transform.position =
+                Vector2.MoveTowards(_transform.position, _wayPoints[_currentPointIndex].Position, speed * Time.deltaTime);
 
-            IEnumerator GoOnPoints()
-            {
-                while (_currentPointIndex < _wayPoints.Length)
-                {
-                    _transform.position =
-                        Vector2.MoveTowards(_transform.position, _wayPoints[_currentPointIndex].Position, speed * Time.deltaTime);
+            if ((_transform.position - _wayPoints[_currentPointIndex].Position).magnitude <= accuracy)
+                _currentPointIndex++;
 
-                    if ((_transform.position - _wayPoints[_currentPointIndex].Position).magnitude <= accuracy)
-                        _currentPointIndex++;
-
-                    yield return new WaitForEndOfFrame();
-                }
-
+            if(_currentPointIndex == _wayPoints.Length)
                 onCameToEndPoint?.Invoke();
-            }
         }
+
+        //public void StartMoveOnPoints()
+        //{
+        //    StartCoroutine(GoOnPoints());
+
+        //    IEnumerator GoOnPoints()
+        //    {
+        //        while (_currentPointIndex < _wayPoints.Length)
+        //        {
+        //            _transform.position =
+        //                Vector2.MoveTowards(_transform.position, _wayPoints[_currentPointIndex].Position, speed * Time.deltaTime);
+
+        //            if ((_transform.position - _wayPoints[_currentPointIndex].Position).magnitude <= accuracy)
+        //                _currentPointIndex++;
+
+        //            yield return new WaitForEndOfFrame();
+        //        }
+
+        //        onCameToEndPoint?.Invoke();
+        //    }
+        //}
     }
 }
 

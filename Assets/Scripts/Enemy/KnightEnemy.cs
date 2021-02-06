@@ -9,6 +9,8 @@ namespace Assets.Scripts.Enemy
     {
         public event Action<int> OnSetMainTowerDamage;
         public event Action<IEnemy, int> OnDeath;
+        public event Action OnGetDamage;
+
         public Vector3 Position => _transform ? _transform.position : transform.position;
 
         private void Awake()
@@ -23,9 +25,11 @@ namespace Assets.Scripts.Enemy
             GetComponentInChildren<SpriteRenderer>().sprite = state.sprite;
         }
 
+
         public void GetDamage(float damagePower)
         {
             _health -= damagePower;
+            OnGetDamage?.Invoke();
 
             if (_health < 0)
             {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d3b6a38a19a2e4a8828241d8befe75, type: 3}
   m_Name: StoneTower
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: c42f2047bb5a83c498fead70e14beefc, type: 3}
-  shootPower: 40
+  sprite: {fileID: 21300000, guid: 762e9d6b9b7a9c6448e722e8f3ec2115, type: 3}
+  shootPower: 55
   fireRate: 1
-  fireRange: 5
+  fireRange: 3

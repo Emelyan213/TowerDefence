@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a82a8ad64c5f154a9c178e12a143754, type: 3}
   m_Name: SuperEnemy
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 2323b60067148a34fad1e2bb13f4a2a3, type: 3}
+  sprite: {fileID: 21300000, guid: 5ffb26e728f79c94cbb08764559d0fa9, type: 3}
   health: 200
   damagePower: 30
   goldCoinCount: 40

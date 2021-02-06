@@ -22,7 +22,6 @@ namespace Assets.Scripts.UI
 
         private void Awake()
         {
-            MenuManager.towerImproveMenu = this;
             _gameController = FindObjectOfType<GameController>();
             closeButton.onClick.AddListener(Hide);
         }

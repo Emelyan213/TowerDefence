@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using Assets.Scripts.Enemy;
+﻿using Assets.Scripts.Enemy;
 using Assets.Scripts.ScriptableObjects;
-using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Towers
@@ -13,13 +11,14 @@ namespace Assets.Scripts.Towers
         private EnemiesManager _enemiesManager;
 
         private Vector3 _position;
+
+        private float _timer = 0;
+
         private void Start()
         {
             _enemiesManager = FindObjectOfType<EnemiesManager>();
 
             _position = transform.position;
-
-            StartCoroutine(Shoot());
 
             SetParameters(towerInfo);
         }
@@ -30,33 +29,20 @@ namespace Assets.Scripts.Towers
             GetComponentInChildren<SpriteRenderer>().sprite = parameters.sprite;
         }
 
-        private IEnumerator Shoot()
+        private void LateUpdate()
         {
-            while (true)
-            {
-                var enemy = _enemiesManager.GetNearestEnemy(_position, _fireRange);
+            _timer += Time.deltaTime;
 
-                if (enemy == null)
-                {
-                    yield return new WaitForEndOfFrame();
-                    continue;
-                }
-
-                enemy.GetDamage(_shootPower);
-                yield return new WaitForSeconds(_fireRate);
-            }
-        }
-
-        private void OnMouseDown()
-        {
-            if (MenuManager.towerImproveMenu.IsActiveForTower(this))
+            if (_timer < _fireRate)
                 return;
 
-            var position = Input.mousePosition;
+            var enemy = _enemiesManager.GetNearestEnemy(_position, _fireRange);
 
-            MenuManager.towerImproveMenu.Show(this, position);
+            if (enemy == null)
+                return;
+
+            _timer = 0;
+            enemy.GetDamage(_shootPower);
         }
-
-
     }
 }

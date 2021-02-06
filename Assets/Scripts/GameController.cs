@@ -12,11 +12,11 @@ namespace Assets.Scripts
         public EnemiesManager Enemies => enemies;
         public Player Player => _player;
 
-        private Player _player;
-
         [SerializeField] private int startPlayerHealth;
         [SerializeField] private EnemiesManager enemies;
         [SerializeField] private TowersManager towersManager;
+
+        private Player _player;
 
         private void Awake()
         {

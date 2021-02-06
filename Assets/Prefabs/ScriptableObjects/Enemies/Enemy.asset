@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a82a8ad64c5f154a9c178e12a143754, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: e37fc7f2041e42f4db7195177854c66b, type: 3}
+  sprite: {fileID: 21300000, guid: 287e060add2c5f0498e32f7cb74c94ba, type: 3}
   health: 150
   damagePower: 20
   goldCoinCount: 25
