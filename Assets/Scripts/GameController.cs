@@ -9,26 +9,26 @@ namespace Assets.Scripts
     {
         public event Action<int> OnEndGame;
 
-        public EnemiesManager Enemies => enemies;
-        public Player Player => _player;
+        public EnemiesManager EnemiesManager => enemiesManager;
+        public Player Player { get; private set; }
 
         [SerializeField] private int startPlayerHealth;
-        [SerializeField] private EnemiesManager enemies;
+        [SerializeField] private EnemiesManager enemiesManager;
         [SerializeField] private TowersManager towersManager;
 
-        private Player _player;
+        private const int DefaultTimeBetweenWaves = 3;
 
         private void Awake()
         {
-            enemies.TimeBetweenWaves = JsonWorker.Deserialize<ConfigFile>("config.txt").timeBetweenWaves;
+            enemiesManager.TimeBetweenWaves = GetTimeBetweenWaves();
 
-            _player = new Player();
-            _player.SetStartHealth(startPlayerHealth);
+            Player = new Player();
+            Player.SetStartHealth(startPlayerHealth);
 
-            _player.OnPlayerDeath += () =>
+            Player.OnPlayerDeath += () =>
             {
-                enemies.Stop();
-                OnEndGame?.Invoke(enemies.KilledEnemiesCount);
+                enemiesManager.Stop();
+                OnEndGame?.Invoke(enemiesManager.KilledEnemiesCount);
 
                 Time.timeScale = 0;
             };
@@ -36,16 +36,26 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            _player.ResetValues();
+            Player.ResetValues();
         }
 
         public void Restart()
         {
-            _player.ResetValues();
-            enemies.Restart();
+            Player.ResetValues();
+            enemiesManager.Restart();
             towersManager.Restart();
 
             Time.timeScale = 1;
+        }
+
+        private int GetTimeBetweenWaves()
+        {
+            var jsonWorker = new JsonWorker();
+            var fileName = "config.txt";
+
+            return jsonWorker.IsFileExist(fileName)
+                ? jsonWorker.Deserialize<ConfigFile>(fileName).timeBetweenWaves
+                : DefaultTimeBetweenWaves;
         }
     }
 }

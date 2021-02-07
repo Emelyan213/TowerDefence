@@ -24,6 +24,7 @@ namespace Assets.Scripts.UI
         {
             _gameController = FindObjectOfType<GameController>();
             closeButton.onClick.AddListener(Hide);
+            CreateButtons();
         }
         public bool IsActiveForTower(Tower tower)
         {
@@ -43,9 +44,9 @@ namespace Assets.Scripts.UI
 
             improvePrice.text =$"Стоимость улучшения {tower.ImprovePrice}";
 
-            ClearOldContent();
+            //ClearOldContent();
 
-            CreateButtons(tower);
+            //CreateButtons(tower);
         }
 
         private void ClearOldContent()
@@ -56,20 +57,36 @@ namespace Assets.Scripts.UI
                 Destroy(button);
         }
 
-        private void CreateButtons(Tower tower)
+        private void CreateButtons()
         {
-            CreateButton(GetImproveActionWithCheck(tower.ImproveShootPower, tower.ImprovePrice), "улучшить силу выстрела");
+            CreateButton(GetImproveActionWithCheck(ImproveShootPower), "улучшить силу выстрела");
 
-            CreateButton(GetImproveActionWithCheck(tower.ImproveFireRate, tower.ImprovePrice), "улучшить скорострельность");
+            CreateButton(GetImproveActionWithCheck(ImproveFireRate), "улучшить скорострельность");
 
-            CreateButton(GetImproveActionWithCheck(tower.ImproveFireRange, tower.ImprovePrice), "улучшить дальность");
+            CreateButton(GetImproveActionWithCheck(ImproveFireRange), "улучшить дальность");
         }
 
-        private UnityAction GetImproveActionWithCheck(Action action, int price)
+        private void ImproveShootPower()
+        {
+            _currentTower.ImproveShootPower();
+        }
+
+        private void ImproveFireRate()
+        {
+            _currentTower.ImproveFireRate();
+        }
+
+        private void ImproveFireRange()
+        {
+            _currentTower.ImproveFireRange();
+        }
+
+
+        private UnityAction GetImproveActionWithCheck(Action action)
         {
             return () =>
             {
-                if (!_gameController.Player.TryToDecreaseGoldCoins(price)) return;
+                if (!_gameController.Player.TryToDecreaseGoldCoins(_currentTower.ImprovePrice)) return;
 
                 action?.Invoke();
                 Hide();

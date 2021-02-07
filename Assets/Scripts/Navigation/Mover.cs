@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Navigation
@@ -35,27 +34,6 @@ namespace Assets.Scripts.Navigation
             if(_currentPointIndex == _wayPoints.Length)
                 onCameToEndPoint?.Invoke();
         }
-
-        //public void StartMoveOnPoints()
-        //{
-        //    StartCoroutine(GoOnPoints());
-
-        //    IEnumerator GoOnPoints()
-        //    {
-        //        while (_currentPointIndex < _wayPoints.Length)
-        //        {
-        //            _transform.position =
-        //                Vector2.MoveTowards(_transform.position, _wayPoints[_currentPointIndex].Position, speed * Time.deltaTime);
-
-        //            if ((_transform.position - _wayPoints[_currentPointIndex].Position).magnitude <= accuracy)
-        //                _currentPointIndex++;
-
-        //            yield return new WaitForEndOfFrame();
-        //        }
-
-        //        onCameToEndPoint?.Invoke();
-        //    }
-        //}
     }
 }
 

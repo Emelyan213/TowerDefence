@@ -6,7 +6,7 @@ namespace Assets.Scripts.Interfaces
     public interface IEnemy : IDamage
     {
         event Action<int> OnSetMainTowerDamage;
-        event Action<IEnemy, int> OnDeath;
+        event Action<int> OnDeath;
         Vector3 Position { get; }
 
         void SetParameters(EnemyState state);

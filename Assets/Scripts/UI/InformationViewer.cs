@@ -14,7 +14,7 @@ namespace Assets.Scripts.UI
 
             gameController.Player.OnHealthChanged += health =>  healthText.text = health.ToString();
             gameController.Player.OnGoldChanged += gold => goldCountText.text = gold.ToString();
-            gameController.Enemies.OnChangedWave += wave => waveIndexText.text = $"волна {wave}";
+            gameController.EnemiesManager.OnChangedWave += wave => waveIndexText.text = $"волна {wave}";
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Assets.Scripts.Enemy
                 _enemyEnemyState[i] = enemiesTypeInfo[i].GetState();
         }
 
-        public EnemyState GetRandomParameters()
+        public EnemyState GetRandomEnemyState()
         {
             var random = new System.Random();
 
@@ -28,12 +28,6 @@ namespace Assets.Scripts.Enemy
         {
             for (var i = 0; i < _enemyEnemyState.Length; i++)
                 _enemyEnemyState[i] = _enemyEnemyState[i].ImproveSomeEnemyParameters(IncreaseValue);
-
-        }
-
-        public EnemyState[] GetParameters()
-        {
-            return _enemyEnemyState.ToArray();
         }
     }
 }

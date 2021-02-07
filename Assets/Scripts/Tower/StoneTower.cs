@@ -8,7 +8,7 @@ namespace Assets.Scripts.Towers
     {
         [SerializeField] private TowerInfo towerInfo;
 
-        private EnemiesManager _enemiesManager;
+        private NearestEnemyFinder _enemyFinder;
 
         private Vector3 _position;
 
@@ -16,7 +16,7 @@ namespace Assets.Scripts.Towers
 
         private void Start()
         {
-            _enemiesManager = FindObjectOfType<EnemiesManager>();
+            _enemyFinder = FindObjectOfType<NearestEnemyFinder>();
 
             _position = transform.position;
 
@@ -36,7 +36,7 @@ namespace Assets.Scripts.Towers
             if (_timer < _fireRate)
                 return;
 
-            var enemy = _enemiesManager.GetNearestEnemy(_position, _fireRange);
+            var enemy = _enemyFinder.GetNearestEnemy(_position, _fireRange);
 
             if (enemy == null)
                 return;

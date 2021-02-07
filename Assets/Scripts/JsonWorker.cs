@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.IO;
 using UnityEngine;
 
-public static class JsonWorker
+public class JsonWorker
 {
-    private static string path = Application.persistentDataPath + "/Config";
+    private string path = Application.streamingAssetsPath + "/Config";
 
-    public static void SaveFile<T>(T serializeObject, string fileName)
+    public void SaveFile<T>(T serializeObject, string fileName)
     {
         var json = JsonUtility.ToJson(serializeObject, true);
 
@@ -21,17 +18,22 @@ public static class JsonWorker
         File.WriteAllText(fullPath, json);
     }
 
-    public static T Deserialize<T>(string fileName)
+    public bool IsFileExist(string fileName)
     {
         var fullPath = Path.Combine(path, fileName);
 
-        if (!File.Exists(fullPath))
+        return File.Exists(fullPath);
+    }
+
+    public T Deserialize<T>(string fileName)
+    {
+        if (!IsFileExist(fileName))
             throw new Exception("File is not exist");
+
+        var fullPath = Path.Combine(path, fileName);
 
         var text = File.ReadAllText(fullPath);
 
         return JsonUtility.FromJson<T>(text);
     }
-
-
 }

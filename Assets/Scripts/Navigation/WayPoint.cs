@@ -4,12 +4,11 @@ namespace Assets.Scripts.Navigation
 {
     public class WayPoint : MonoBehaviour
     {
-        public Vector3 Position => _position;
-        private Vector3 _position;
+        public Vector3 Position { get; private set; }
 
         private void Awake()
         {
-            _position = transform.position;
+            Position = transform.position;
         }
     }
 }

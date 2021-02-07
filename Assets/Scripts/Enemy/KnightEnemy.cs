@@ -8,7 +8,7 @@ namespace Assets.Scripts.Enemy
     public class KnightEnemy : Enemy, IEnemy
     {
         public event Action<int> OnSetMainTowerDamage;
-        public event Action<IEnemy, int> OnDeath;
+        public event Action<int> OnDeath;
         public event Action OnGetDamage;
 
         public Vector3 Position => _transform ? _transform.position : transform.position;
@@ -25,7 +25,6 @@ namespace Assets.Scripts.Enemy
             GetComponentInChildren<SpriteRenderer>().sprite = state.sprite;
         }
 
-
         public void GetDamage(float damagePower)
         {
             _health -= damagePower;
@@ -33,16 +32,16 @@ namespace Assets.Scripts.Enemy
 
             if (_health < 0)
             {
-                OnDeath?.Invoke(this, _goldCoinCount);
-                Destroy(gameObject);
+                OnDeath?.Invoke(_goldCoinCount);
+                Destroy();
             }
         }
 
         public void Death()
         {
             OnSetMainTowerDamage?.Invoke(_damagePower);
-            OnDeath?.Invoke(this, 0);
-            Destroy(gameObject);
+            OnDeath?.Invoke(0);
+            Destroy();
         }
 
         public void Destroy()

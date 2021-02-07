@@ -13,26 +13,27 @@ namespace Assets.Scripts.Enemy
     {
         public event Action<int> OnChangedWave;
         public int KilledEnemiesCount { get; private set; }
-
+        public List<IEnemy> Enemies { get; private set; }
         public int TimeBetweenWaves { get; set; }
 
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private EnemyInfo[] enemyTypes;
-        [SerializeField] private float delay = 1;
+        [SerializeField] private float delayingEnemyInstantiation = 1;
 
         [SerializeField] private WayPoint[] wayPoints;
 
         private GameController _gameController;
         private EnemiesStatesController _enemiesParametersController;
-
-        private List<IEnemy> _enemies = new List<IEnemy>();
         private const int MaxRangeRandomEnemyCount = 3;
 
         private int _waveIndex = 1;
         private bool _isGameContinues = true;
+        private int _notInstantiatedEnemiesCount = 0;
 
         private void Start()
         {
+            Enemies = new List<IEnemy>();
+
             _enemiesParametersController = new EnemiesStatesController();
             _enemiesParametersController.SetParameters(enemyTypes);
 
@@ -61,10 +62,10 @@ namespace Assets.Scripts.Enemy
 
         private void DestroyAllEnemy()
         {
-            foreach (var enemy in _enemies.ToArray())
+            foreach (var enemy in Enemies.ToArray())
                 enemy.Destroy();
 
-            _enemies.Clear();
+            Enemies.Clear();
         }
 
         private void SpawnEnemies()
@@ -77,11 +78,11 @@ namespace Assets.Scripts.Enemy
             {
                 while (_isGameContinues)
                 {
-                    var count = random.Next(_waveIndex, _waveIndex + MaxRangeRandomEnemyCount);
+                    _notInstantiatedEnemiesCount = random.Next(_waveIndex, _waveIndex + MaxRangeRandomEnemyCount);
 
-                    yield return InstantiationEnemy(count);
+                    yield return InstantiationEnemy(_notInstantiatedEnemiesCount);
 
-                    yield return new WaitUntil(() => _enemies.Count == 0);
+                    yield return new WaitUntil(() => Enemies.Count == 0);
 
                     yield return new WaitForSeconds(TimeBetweenWaves);
                 }
@@ -105,54 +106,33 @@ namespace Assets.Scripts.Enemy
                 var mover = enemyObject.GetComponent<Mover>();
 
                 mover.SetWayPoints(wayPoints);
-                //mover.StartMoveOnPoints();
 
-                EnemySetting(enemyObject);
+                InitializeEnemy(enemyObject);
 
-                yield return new WaitForSeconds(delay);
+                _notInstantiatedEnemiesCount--;
+
+                yield return new WaitForSeconds(delayingEnemyInstantiation);
             }
         }
 
-        private void EnemySetting(GameObject enemyObject)
+        private void InitializeEnemy(GameObject enemyObject)
         {
             var enemy = enemyObject.GetComponent<IEnemy>();
-            enemy.SetParameters(_enemiesParametersController.GetRandomParameters());
+            enemy.SetParameters(_enemiesParametersController.GetRandomEnemyState());
 
-            enemy.OnDeath += (deadEnemy, coin) =>
+            enemy.OnDeath += (coin) =>
             {
-                _enemies.Remove(deadEnemy);
+                Enemies.Remove(enemy);
                 _gameController.Player.IncreaseGold(coin);
 
                 KilledEnemiesCount++;
 
-                if (_enemies.Count == 0)
+                if (Enemies.Count == 0 && _notInstantiatedEnemiesCount == 0)
                     EndWave();
             };
 
             enemy.OnSetMainTowerDamage += _gameController.Player.DecreaseHealth;
-            _enemies.Add(enemy);
-        }
-
-        public IEnemy GetNearestEnemy(Vector3 position, float findDistance)
-        {
-            if (_enemies.Count == 0)
-                return null;
-
-            var nearestEnemy = _enemies[0];
-
-            foreach (var enemy in _enemies)
-            {
-                var distanceToCurrentEnemy = Vector3.Distance(enemy.Position, position);
-                var distanceToNearestEnemy = Vector3.Distance(nearestEnemy.Position, position);
-
-                if (distanceToCurrentEnemy < distanceToNearestEnemy)
-                    nearestEnemy = enemy;
-            }
-
-            if (Vector3.Distance(nearestEnemy.Position, position) > findDistance)
-                nearestEnemy = null;
-
-            return nearestEnemy;
+            Enemies.Add(enemy);
         }
     }
 }

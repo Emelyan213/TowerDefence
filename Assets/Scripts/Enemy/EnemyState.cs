@@ -9,14 +9,14 @@ public struct EnemyState
 
     public EnemyState ImproveSomeEnemyParameters(int increaseValue)
     {
-        damagePower += IncreaseParameter(increaseValue);
-        health += IncreaseParameter(increaseValue);
-        goldCoinCount += IncreaseParameter(increaseValue);
+        damagePower += GetIncreaseValue(increaseValue);
+        health += GetIncreaseValue(increaseValue);
+        goldCoinCount += GetIncreaseValue(increaseValue);
 
         return this;
     }
 
-    private int IncreaseParameter(int increaseValue)
+    private int GetIncreaseValue(int increaseValue)
     {
         var random = new System.Random();
 
