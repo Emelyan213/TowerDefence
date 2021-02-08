@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -43,18 +42,6 @@ namespace Assets.Scripts.UI
                 $"Дальность - {tower.FireRange:F1} \n";
 
             improvePrice.text =$"Стоимость улучшения {tower.ImprovePrice}";
-
-            //ClearOldContent();
-
-            //CreateButtons(tower);
-        }
-
-        private void ClearOldContent()
-        {
-            var buttons = placeForButtons.GetComponentsInChildren<Button>().Select(e => e.gameObject);
-
-            foreach (var button in buttons.ToList())
-                Destroy(button);
         }
 
         private void CreateButtons()
